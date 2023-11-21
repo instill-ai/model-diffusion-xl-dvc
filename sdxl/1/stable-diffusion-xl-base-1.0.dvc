@@ -1,0 +1,5 @@
+outs:
+- md5: 6381b2577254b776ab76693c8aa280f1.dir
+  size: 63836004577
+  nfiles: 57
+  path: stable-diffusion-xl-base-1.0

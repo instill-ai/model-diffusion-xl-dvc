@@ -1,0 +1,5 @@
+outs:
+- md5: 3acba462b6e30af0f4e5379759a7e1ef.dir
+  size: 30728885041
+  nfiles: 26
+  path: stable-diffusion-xl-refiner-1.0
