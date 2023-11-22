@@ -54,8 +54,8 @@ class TritonPythonModel:
 
         # Load the model
         
-        base_model_path = str(Path(__file__).parent.absolute().joinpath('stable-diffusion-xl-base-1.0/'))
-        refiner_model_path = str(Path(__file__).parent.absolute().joinpath('stable-diffusion-xl-refiner-1.0/'))
+        base_model_path = str(Path(__file__).parent.absolute().joinpath('stable-diffusion-xl-base-1.0'))
+        refiner_model_path = str(Path(__file__).parent.absolute().joinpath('stable-diffusion-xl-refiner-1.0'))
         
         self.logger.log_info(f'[DEBUG] load model under path: {base_model_path}')
         self.logger.log_info(f'[DEBUG] load model under path: {refiner_model_path}')
