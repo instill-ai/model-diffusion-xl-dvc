@@ -1,7 +1,7 @@
 # pylint: skip-file
 import os
 import random
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 # os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
 
 import traceback
@@ -54,8 +54,8 @@ class TritonPythonModel:
 
         # Load the model
         
-        base_model_path = str(Path(__file__).parent.absolute().joinpath('stable-diffusion-xl-base-1.0'))
-        refiner_model_path = str(Path(__file__).parent.absolute().joinpath('stable-diffusion-xl-refiner-1.0'))
+        base_model_path = str(Path(__file__).parent.absolute().joinpath('stable-diffusion-xl-base-1.0/'))
+        refiner_model_path = str(Path(__file__).parent.absolute().joinpath('stable-diffusion-xl-refiner-1.0/'))
         
         self.logger.log_info(f'[DEBUG] load model under path: {base_model_path}')
         self.logger.log_info(f'[DEBUG] load model under path: {refiner_model_path}')
