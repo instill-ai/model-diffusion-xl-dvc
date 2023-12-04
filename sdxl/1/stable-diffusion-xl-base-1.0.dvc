@@ -1,5 +1,6 @@
 outs:
-- md5: 6381b2577254b776ab76693c8aa280f1.dir
-  size: 63836004577
-  nfiles: 57
+- md5: bfce75df41738ee6ee285f164a529d1e.dir
+  size: 27754711111
+  nfiles: 23
+  hash: md5
   path: stable-diffusion-xl-base-1.0

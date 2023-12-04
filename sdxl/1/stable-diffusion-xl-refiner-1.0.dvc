@@ -1,5 +1,6 @@
 outs:
-- md5: 3acba462b6e30af0f4e5379759a7e1ef.dir
-  size: 30728885041
-  nfiles: 26
+- md5: 6eafe762c2f6505229ba211e7022e1b7.dir
+  size: 12655479208
+  nfiles: 16
+  hash: md5
   path: stable-diffusion-xl-refiner-1.0
