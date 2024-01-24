@@ -186,13 +186,19 @@ class Sdxl:
 
         high_noise_frac = 0.8
         if "high_noise_frac" in task_text_to_image_input.extra_params:
-            high_noise_frac = task_text_to_image_input.extra_params
+            high_noise_frac = task_text_to_image_input.extra_params["high_noise_frac"]
+
+        num_inference_steps = 40
+        if "num_inference_steps" in task_text_to_image_input.extra_params:
+            num_inference_steps = task_text_to_image_input.extra_params[
+                "num_inference_steps"
+            ]
 
         t0 = time.time()
 
         image = self.base(
             prompt=task_text_to_image_input.prompt,
-            num_inference_steps=task_text_to_image_input.num_inference_steps,
+            num_inference_steps=num_inference_steps,
             denoising_end=high_noise_frac,
             guidance_scale=task_text_to_image_input.guidance_scale,
             output_type="latent",
@@ -200,7 +206,7 @@ class Sdxl:
 
         image = self.refiner(
             prompt=task_text_to_image_input.prompt,
-            num_inference_steps=task_text_to_image_input.num_inference_steps,
+            num_inference_steps=num_inference_steps,
             denoising_start=high_noise_frac,
             guidance_scale=task_text_to_image_input.guidance_scale,
             image=image,
