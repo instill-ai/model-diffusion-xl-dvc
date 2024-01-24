@@ -94,11 +94,11 @@ class Sdxl:
                     datatype=str(DataType.TYPE_STRING.name),
                     shape=[1],
                 ),
-                Metadata(
-                    name="prompt_image",
-                    datatype=str(DataType.TYPE_STRING.name),
-                    shape=[1],
-                ),
+                # Metadata(
+                #     name="prompt_image",
+                #     datatype=str(DataType.TYPE_STRING.name),
+                #     shape=[1],
+                # ),
                 Metadata(
                     name="samples",
                     datatype=str(DataType.TYPE_INT32.name),
