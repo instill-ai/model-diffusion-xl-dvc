@@ -55,30 +55,30 @@ class Sdxl:
         print(f"torch.cuda.device(0) : {torch.cuda.device(0)}")
         print(f"torch.cuda.get_device_name(0) : {torch.cuda.get_device_name(0)}")
 
-        if model_path[-1] != "/":
-            model_path = f"{model_path}/"
-        base_model_path = f"{model_path}stable-diffusion-xl-base-1.0/"
-        refiner_model_path = f"{model_path}stable-diffusion-xl-refiner-1.0/"
+        # if model_path[-1] != "/":
+        #     model_path = f"{model_path}/"
+        # base_model_path = f"{model_path}stable-diffusion-xl-base-1.0/"
+        # refiner_model_path = f"{model_path}stable-diffusion-xl-refiner-1.0/"
 
-        self.base = diffusers.DiffusionPipeline.from_pretrained(
-            base_model_path,  # "stabilityai/stable-diffusion-xl-base-1.0",
-            torch_dtype=torch.float16,
-            variant="fp16",
-            use_safetensors=True,
-            device_map="auto",
-        ).to("cuda")
+        # self.base = diffusers.DiffusionPipeline.from_pretrained(
+        #     base_model_path,  # "stabilityai/stable-diffusion-xl-base-1.0",
+        #     torch_dtype=torch.float16,
+        #     variant="fp16",
+        #     use_safetensors=True,
+        #     device_map="auto",
+        # ).to("cuda")
 
-        self.refiner = diffusers.DiffusionPipeline.from_pretrained(
-            refiner_model_path,  # "stabilityai/stable-diffusion-xl-refiner-1.0",
-            text_encoder_2=self.base.text_encoder_2,
-            vae=self.base.vae,
-            torch_dtype=torch.float16,
-            use_safetensors=True,
-            variant="fp16",
-            device_map="auto",
-            output_loading_info=True
-            # max_memory={0: "12GB", 1: "12GB", 2: "12GB", 3: "12GB"},
-        ).to("cuda")
+        # self.refiner = diffusers.DiffusionPipeline.from_pretrained(
+        #     refiner_model_path,  # "stabilityai/stable-diffusion-xl-refiner-1.0",
+        #     text_encoder_2=self.base.text_encoder_2,
+        #     vae=self.base.vae,
+        #     torch_dtype=torch.float16,
+        #     use_safetensors=True,
+        #     variant="fp16",
+        #     device_map="auto",
+        #     output_loading_info=True
+        #     # max_memory={0: "12GB", 1: "12GB", 2: "12GB", 3: "12GB"},
+        # ).to("cuda")
 
     def ModelMetadata(self, req):
         resp = construct_metadata_response(
@@ -94,11 +94,11 @@ class Sdxl:
                     datatype=str(DataType.TYPE_STRING.name),
                     shape=[1],
                 ),
-                Metadata(
-                    name="prompt_image",
-                    datatype=str(DataType.TYPE_STRING.name),
-                    shape=[1],
-                ),
+                # Metadata(
+                #     name="prompt_image",
+                #     datatype=str(DataType.TYPE_STRING.name),
+                #     shape=[1],
+                # ),
                 Metadata(
                     name="samples",
                     datatype=str(DataType.TYPE_INT32.name),
@@ -180,51 +180,52 @@ class Sdxl:
         print(task_text_to_image_input.extra_params)
         print("-------\n")
 
-        if task_text_to_image_input.seed > 0:
-            random.seed(task_text_to_image_input.seed)
-            np.random.seed(task_text_to_image_input.seed)
+        # if task_text_to_image_input.seed > 0:
+        #     random.seed(task_text_to_image_input.seed)
+        #     np.random.seed(task_text_to_image_input.seed)
 
-        high_noise_frac = 0.8
-        if "high_noise_frac" in task_text_to_image_input.extra_params:
-            high_noise_frac = task_text_to_image_input.extra_params
+        # high_noise_frac = 0.8
+        # if "high_noise_frac" in task_text_to_image_input.extra_params:
+        #     high_noise_frac = task_text_to_image_input.extra_params
 
-        t0 = time.time()
+        # t0 = time.time()
 
-        image = self.base(
-            prompt=task_text_to_image_input.prompt,
-            num_inference_steps=task_text_to_image_input.num_inference_steps,
-            denoising_end=high_noise_frac,
-            guidance_scale=task_text_to_image_input.guidance_scale,
-            output_type="latent",
-        ).images
+        # image = self.base(
+        #     prompt=task_text_to_image_input.prompt,
+        #     num_inference_steps=task_text_to_image_input.num_inference_steps,
+        #     denoising_end=high_noise_frac,
+        #     guidance_scale=task_text_to_image_input.guidance_scale,
+        #     output_type="latent",
+        # ).images
 
-        image = self.refiner(
-            prompt=task_text_to_image_input.prompt,
-            num_inference_steps=task_text_to_image_input.num_inference_steps,
-            denoising_start=high_noise_frac,
-            guidance_scale=task_text_to_image_input.guidance_scale,
-            image=image,
-        ).images[0]
+        # image = self.refiner(
+        #     prompt=task_text_to_image_input.prompt,
+        #     num_inference_steps=task_text_to_image_input.num_inference_steps,
+        #     denoising_start=high_noise_frac,
+        #     guidance_scale=task_text_to_image_input.guidance_scale,
+        #     image=image,
+        # ).images[0]
 
-        to_tensor_transform = transforms.ToTensor()
-        tensor_image = to_tensor_transform(image)
-        batch_tensor_image = tensor_image.unsqueeze(0).to("cpu").permute(0, 2, 3, 1)
-        torch.cuda.empty_cache()
+        # to_tensor_transform = transforms.ToTensor()
+        # tensor_image = to_tensor_transform(image)
+        # batch_tensor_image = tensor_image.unsqueeze(0).to("cpu").permute(0, 2, 3, 1)
+        # torch.cuda.empty_cache()
 
-        print(f"Inference time cost {time.time()-t0}s")
+        # print(f"Inference time cost {time.time()-t0}s")
 
-        print(f"image: type({type(batch_tensor_image)}):")
-        print(f"image: shape: {batch_tensor_image.shape}")
+        # print(f"image: type({type(batch_tensor_image)}):")
+        # print(f"image: shape: {batch_tensor_image.shape}")
 
-        # task_output = StandardTaskIO.parse_task_text_generation_output(sequences)
-        # task_output = np.asarray(batch_tensor_image).tobytes()
-        task_output = batch_tensor_image.numpy().tobytes()
+        # # task_output = StandardTaskIO.parse_task_text_generation_output(sequences)
+        # # task_output = np.asarray(batch_tensor_image).tobytes()
+        # task_output = batch_tensor_image.numpy().tobytes()
 
-        print("Output:")
-        print(task_output)
+        # print("Output:")
+        # print(task_output)
+        task_output = np.random.rand(1, 3, 100, 100)  # DEBUG LINE
         print("type(task_output): ", type(task_output))
-        print("batch_tensor_image.numpy().shape:", batch_tensor_image.numpy().shape)
-        print("batch_tensor_image.shape: ", batch_tensor_image.shape)
+        # print("batch_tensor_image.numpy().shape:", batch_tensor_image.numpy().shape)
+        # print("batch_tensor_image.shape: ", batch_tensor_image.shape)
 
         return construct_infer_response(
             req=req,

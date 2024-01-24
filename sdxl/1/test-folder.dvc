@@ -1,0 +1,5 @@
+outs:
+- md5: 7f992d57ba4baad438dcbd37ba3cf8e8.dir
+  size: 2
+  nfiles: 1
+  path: test-folder
