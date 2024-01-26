@@ -94,11 +94,11 @@ class Sdxl:
                     datatype=str(DataType.TYPE_STRING.name),
                     shape=[1],
                 ),
-                # Metadata(
-                #     name="prompt_image",
-                #     datatype=str(DataType.TYPE_STRING.name),
-                #     shape=[1],
-                # ),
+                Metadata(
+                    name="prompt_image",
+                    datatype=str(DataType.TYPE_STRING.name),
+                    shape=[1],
+                ),
                 Metadata(
                     name="samples",
                     datatype=str(DataType.TYPE_INT32.name),
@@ -149,7 +149,7 @@ class Sdxl:
         print("----------------________")
 
         print("print(task_text_to_image_input.prompt_image)")
-        print(task_text_to_image_input.prompt_image)
+        print(type(task_text_to_image_input.prompt_image))
         print("-------\n")
 
         print("print(task_text_to_image_input.prompt)")
