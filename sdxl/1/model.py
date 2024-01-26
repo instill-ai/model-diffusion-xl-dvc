@@ -227,7 +227,7 @@ class Sdxl:
         task_output = batch_tensor_image.numpy().tobytes()
 
         print("Output:")
-        print(task_output)
+        # print(task_output)
         print("type(task_output): ", type(task_output))
         print("batch_tensor_image.numpy().shape:", batch_tensor_image.numpy().shape)
         print("batch_tensor_image.shape: ", batch_tensor_image.shape)
@@ -238,7 +238,8 @@ class Sdxl:
                 Metadata(
                     name="images",
                     datatype=str(DataType.TYPE_FP32.name),
-                    shape=[-1, -1, -1, -1],
+                    # shape=[-1, -1, -1, -1],
+                    shape=[1, 1024, 1024, 3],
                 )
             ],
             raw_outputs=[task_output],
