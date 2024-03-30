@@ -42,41 +42,38 @@ from instill.helpers import (
 
 @instill_deployment
 class Sdxl:
-    def __init__(self, model_path: str):
-        self.application_name = "_".join(model_path.split("/")[3:5])
-        self.deployement_name = model_path.split("/")[4]
-        print(f"application_name: {self.application_name}")
-        print(f"deployement_name: {self.deployement_name}")
+    def __init__(self):
         print(f"torch version: {torch.__version__}")
-
         print(f"torch.cuda.is_available() : {torch.cuda.is_available()}")
         print(f"torch.cuda.device_count() : {torch.cuda.device_count()}")
-        print(f"torch.cuda.current_device() : {torch.cuda.current_device()}")
-        print(f"torch.cuda.device(0) : {torch.cuda.device(0)}")
-        print(f"torch.cuda.get_device_name(0) : {torch.cuda.get_device_name(0)}")
+        # print(f"torch.cuda.current_device() : {torch.cuda.current_device()}")
+        # print(f"torch.cuda.device(0) : {torch.cuda.device(0)}")
+        # print(f"torch.cuda.get_device_name(0) : {torch.cuda.get_device_name(0)}")
 
-        if model_path[-1] != "/":
-            model_path = f"{model_path}/"
-        base_model_path = f"{model_path}stable-diffusion-xl-base-1.0/"
-        refiner_model_path = f"{model_path}stable-diffusion-xl-refiner-1.0/"
+        # https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
+        # Download through huggingface
+
+        ACCESS_TOKEN = "..."
 
         self.base = diffusers.DiffusionPipeline.from_pretrained(
-            base_model_path,  # "stabilityai/stable-diffusion-xl-base-1.0",
+            "stabilityai/stable-diffusion-xl-base-1.0",
             torch_dtype=torch.float16,
             variant="fp16",
             use_safetensors=True,
             device_map="auto",
+            token=ACCESS_TOKEN,
         ).to("cuda")
 
         self.refiner = diffusers.DiffusionPipeline.from_pretrained(
-            refiner_model_path,  # "stabilityai/stable-diffusion-xl-refiner-1.0",
+            "stabilityai/stable-diffusion-xl-refiner-1.0",
             text_encoder_2=self.base.text_encoder_2,
             vae=self.base.vae,
             torch_dtype=torch.float16,
             use_safetensors=True,
             variant="fp16",
             device_map="auto",
-            output_loading_info=True
+            output_loading_info=True,
+            token=ACCESS_TOKEN,
             # max_memory={0: "12GB", 1: "12GB", 2: "12GB", 3: "12GB"},
         ).to("cuda")
 
@@ -246,14 +243,11 @@ class Sdxl:
         )
 
 
-deployable = InstillDeployable(
-    Sdxl,
-    # There are two models in this directory,
-    # path would be construct inside initialize function
-    model_weight_or_folder_name="/",
-    use_gpu=True,
+entrypoint = (
+    # https://github.com/instill-ai/python-sdk/blob/main/samples/tinyllama-gpu/model.py
+    InstillDeployable(Sdxl)
+    .update_max_replicas(4)
+    .update_min_replicas(1)
+    .update_num_gpus(0.35)  # 15G/40G
+    .get_deployment_handle()
 )
-
-# # Optional
-# deployable.update_max_replicas(2)
-# deployable.update_min_replicas(0)

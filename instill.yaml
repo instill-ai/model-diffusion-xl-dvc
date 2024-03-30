@@ -1,0 +1,20 @@
+build:
+  gpu: true
+  python_version: "3.11"
+  python_packages:
+    - torch==2.2.1
+    - opencv-contrib-python-headless==4.8.1.78
+    - onnxruntime-gpu==1.16.2
+    - sentencepiece==0.1.99
+    - transformers==4.36.2
+    - diffusers==0.24.0
+    - accelerate==0.25.0
+    - protobuf==4.24.4
+    - grpcio-tools==1.59.3
+    - instill-sdk==0.7.1rc2
+    - chardet==5.2.0
+    - xformers==0.0.23.post1
+    - bitsandbytes==0.42.0
+
+repo: admin/diffusion-xl-gpu # make sure the format is {user-id}/{model-id} and the
+tag: rev1 # {model-id} match the model namespace created on console
